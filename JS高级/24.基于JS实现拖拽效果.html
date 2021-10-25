@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    #box {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      background: orange;
+    }
+  </style>
+</head>
+<body>
+  <div id="box"></div>
+
+  <script>
+    // 如果在盒子上绑定 mousemove 方法会出现焦点丢失问题，即鼠标移动过快，计算盒子位置的程序跟不上处理
+    // 解决焦点丢失问题
+    // IE、火狐：把鼠标和盒子绑定在一起(setCapture/releaseCapture)
+    // 谷歌：所有的原因都是因为鼠标不在盒子上，事件触发不了，但是鼠标不管移动多块，都离不开浏览器，所以把 mouseover 和 mouseup 事件方法都绑定给 window
+
+    const box = document.getElementById('box')
+    // box.getBoundingClientRect() 获取的是距离当前视口的位置信息
+
+    // 获取边界值
+    let html = document.documentElement
+    let minLeft = 0
+    let minTop = 0
+    let maxLeft = html.clientWidth - box.offsetLeft
+    let maxTop = html.clientHeight - box.offsetHeight
+    console.log(minLeft, minTop)
+
+    box.onmousedown = function (e) {
+      console.log('onmousedown', e)
+      let { left, top } = this.getBoundingClientRect()
+      this.left = left
+      this.top = top
+      this.clientX = e.clientX
+      this.clientY = e.clientY
+
+      this._move = move.bind(this)
+      this._up = up.bind(this)
+      window.addEventListener('mousemove', this._move)
+      window.addEventListener('mouseup', this._up)
+    }
+
+    const move = function (e) {
+      let diffX = this.left + (e.clientX - this.clientX)
+      let diffY = this.top + (e.clientY - this.clientY)
+      console.log(diffX, diffY)
+      diffX = diffX <= minLeft ? minLeft : (diffX >= maxLeft) ? maxLeft : diffX
+      diffY = diffY <= minTop ? minTop : (diffY >= maxTop) ? maxTop : diffY
+      this.left = diffX
+      box.style.left = this.left + 'px'
+      this.clientX = e.clientX
+      this.top = diffY
+      box.style.top = this.top + 'px'
+      this.clientY = e.clientY
+    }
+
+    const up = function (e) {
+      console.log('onmouseup', e)
+      window.removeEventListener('mousemove', this._move)
+      window.removeEventListener('mouseup', this._up)
+    }
+  </script>
+</body>
+</html>
