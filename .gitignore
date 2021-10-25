@@ -1,7 +1,7 @@
 # Build and Release Folders
 node_modules/
 .history/
-**/.node_modules
+**/node_modules
 **/.history
 
 # Other files and folders
