@@ -31,4 +31,18 @@ function versionSort (arr) {
   })
 }
 
+/* function versionSort (arr) {
+  return arr.sort((a, b) => {
+    const arrA = a.split('.') || []
+    const arrB = b.split('.') || []
+    const len = Math.min(arrA.length, arrB.length)
+    for (let i = 0; i < len; i++) {
+      if (arrA[i] !== arrB[i]) {
+        return arrB[i] - arrA[i]
+      }
+    }
+    return arrB.length - arrA.length
+  })
+} */
+
 console.log(versionSort(arr))

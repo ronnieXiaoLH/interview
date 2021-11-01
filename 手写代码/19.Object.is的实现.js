@@ -16,3 +16,12 @@ Object.is = function (x, y) {
 
 console.log(Object.is(NaN, NaN))
 console.log(Object.is(+0, -0))
+
+function objectIs (a, b) {
+  // a, b 都是 NaN 的时候，return true
+  if (a !== a && b !== b) {
+    return  true
+  }
+  // 特殊判断 +0 和 -0 的情况
+  return a === b && 1 / a === 1 / b
+}
