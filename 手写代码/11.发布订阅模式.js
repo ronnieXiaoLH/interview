@@ -10,7 +10,14 @@ class EventEmitter {
 
   emit (eventType) {
     this.callbacks[eventType].forEach(cb => {
-      cb()
+      if (typeof cb === 'function') {
+        // 使用 try catch 的目的是，如果某个 cb 执行报错，不影响其他 cb 的执行
+        try {
+          cb()
+        } catch (error) {
+          console.log(error)
+        }
+      }
     })
   }
 
@@ -39,8 +46,14 @@ function event1 () {
   console.log('event1')
 }
 
+function event1_1 () {
+  console.log(a.b)
+  console.log('event1_1')
+}
+
 // vm.on('event1', event1)
+vm.once('event1', event1_1)
 vm.once('event1', event1)
 
 vm.emit('event1')
-vm.emit('event1')
+// vm.emit('event1')
