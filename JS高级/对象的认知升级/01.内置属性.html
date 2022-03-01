@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>内置属性</title>
+  </head>
+  <body>
+    <script>
+      function CustomObject(eCount, pCount) {
+        for (let i = 0; i < eCount; i++) {
+          this[i] = `e-${i}`
+        }
+
+        for (let i = 0; i < pCount; i++) {
+          this[`p-${i}`] = `p-${i}`
+        }
+      }
+
+      // 排序属性 6 个，普通属性 6 个
+      // let obj = new CustomObject(6, 6)
+
+      // 排序属性 6 个，普通属性 16 个
+      var obj = new CustomObject(6, 16)
+
+      // 排序属性 6 个，普通属性 50 个
+      // var obj = new CustomObject(6, 50)
+    </script>
+  </body>
+</html>
