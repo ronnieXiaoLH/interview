@@ -114,6 +114,32 @@ console.log(arr.indexOf(NaN)) // -1
  *  - Symbol.ToPrimitive
  *  - Object.prototype.valueOf
  *  - Object.prototype.toString
+ * valueOf 的优先级和 toString 的优先级与期望有关：
+ *  + 期望是 string，toString 优先级高于 valueOf
+ *  + 期望是 number 或 default，valueOf 优先级高于 toString
+ *
+ * 什么时候期望是 string 呢?
+ *  + window.alert(obj)
+ *  + 模板字符串 `${obj}`
+ *  + 对象的属性key test[obj] = 123
+ *
+ * 什么时候期望是 number 呢?
+ *  + 一元 + ，位移
+ *  + -, *, /, 关系运算符
+ *  + Math.pow, String.prototype.slice 等很多内部方法
+ *
+ * 什么时候期望是 default 呢?
+ *  + 二元 +
+ *  + ==, !=
+ *
+ * 注意：如果对象的私用属性有 valueOf 或 toString , 优先级是高于 Object.prototype.valueOf 和 Object.prototype.toString 的
+ *
+ * 疑问：如果 Symbol.ToPrimitive， Object.prototype.valueOf，Object.prototype.toString 都没有返回原始类型数据的值呢？
+ *  抛出异常: Uncaught TypeError: Cannot convert object to primitive value
+ *
+ * 误区：
+ *  + === 和 !== 是否触发隐式转换 ？ 不，严等和严不等，不触发隐私转换
+ *  + == 和 != 宽松比较是否触发隐式转换 ？ 分类型，一边是对象，一边是基础类型触发，两边都是对象不触发
  */
 
 /**
@@ -129,7 +155,7 @@ console.log(arr.indexOf(NaN)) // -1
  *  1. typeof {}[Symbol.toPrimitive] // undefined
  *  2. ({}).valueOf() // {}
  *  3. ({}).toString() // '[object Object]'
- * 结论：[] 的原始值是 '[object Object]'
+ * 结论：{} 的原始值是 '[object Object]'
  */
 
 console.log({} + {}) // => '[object Object]' + '[object Object]' '[object Object][object Object]'
