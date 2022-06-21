@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div>
+      <button id="btn1" onclick="console.log('按钮1被点击了')">
+        按钮1(代码)
+      </button>
+    </div>
+    <div>
+      <button onclick="onClick2()">按钮2(函数)</button>
+    </div>
+    <div>
+      <button onclick="console.log(this.className,this);" class="button3">
+        按钮3(this)
+      </button>
+    </div>
+
+    <div>
+      <!-- onClick4 找不到，不在全局作用域 -->
+      <button onclick="onClick4()" class="button3">按钮4(全局作用域)</button>
+    </div>
+
+    <script>
+      function onClick2() {
+        console.log('按钮2被点击了')
+      }
+
+      ;(function () {
+        function onClick4() {
+          console.log('按钮4被点击了')
+        }
+      })()
+    </script>
+  </body>
+</html>
