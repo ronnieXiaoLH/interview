@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="outer" class="outer">
+      <ul class="list list-1">
+        <li class="item item2 item3" name="li-item">list-one</li>
+        <li class="item">list-two</li>
+        <li class="item">list-three</li>
+      </ul>
+    </div>
+    <div id="outer2" class="outer2"></div>
+
+    <script>
+      const iterator = document.createNodeIterator(outer, NodeFilter.SHOW_ALL, {
+        acceptNode(node) {
+          return node.tagName === 'LI'
+            ? NodeFilter.FILTER_ACCEPT
+            : NodeFilter.FILTER_REJECT
+        },
+      })
+      let currentNode
+      while ((currentNode = iterator.nextNode())) {
+        console.log(currentNode.innerText)
+      }
+    </script>
+  </body>
+</html>

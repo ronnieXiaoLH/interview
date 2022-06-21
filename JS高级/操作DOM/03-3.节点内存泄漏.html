@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script>
+      var el = document.createElement('div')
+      el.appendChild(new Text('我是文本'))
+      root.appendChild(el)
+
+      const wkRef = new WeakRef(el)
+
+      console.log('删除节点')
+      root.removeChild(el)
+
+      setInterval(() => {
+        if (wkRef.deref()) {
+          console.log('el未回收')
+        } else {
+          console.log('el已回收')
+        }
+      }, 1000)
+
+      // 回收节点
+      el = null
+    </script>
+  </body>
+</html>

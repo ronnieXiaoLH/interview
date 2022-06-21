@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btnSingle">单个创建</button>
+    <button id="btnBatch">批量创建</button>
+    <div id="root" style="height: 500px; overflow: auto"></div>
+
+    <script>
+      const items = Array.from({ length: 10000 }, (_, i) => ({
+        name: 'name' + i,
+        age: i,
+        sex: i % 2,
+      }))
+      function createByS() {
+        console.time('createByS')
+        items.forEach((item) => {
+          const div = document.createElement('div')
+          div.innerHTML = `name:${item.name} - age:${item.age} - sex:${item.sex}`
+          root.appendChild(div)
+        })
+        console.timeEnd('createByS')
+      }
+
+      function createByB() {
+        console.time('createByB')
+        const fragment = document.createDocumentFragment()
+        items.forEach((item) => {
+          const div = document.createElement('div')
+          div.innerHTML = `name:${item.name} - age:${item.age} - sex:${item.sex}`
+          fragment.appendChild(div)
+        })
+        root.appendChild(fragment)
+        console.timeEnd('createByB')
+      }
+
+      btnSingle.addEventListener('click', createByS)
+      btnBatch.addEventListener('click', createByB)
+    </script>
+  </body>
+</html>

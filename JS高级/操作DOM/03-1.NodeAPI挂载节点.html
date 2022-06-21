@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="margin-left: 50px">
+      <button id="btnAppendChild">appendChild</button>
+      <button id="btnInsertBefore">insertBefore</button>
+      <button id="btnRepalceChild">replaceChild</button>
+      <button id="btnTextContent">textContent</button>
+    </div>
+    <div style="margin: 50px">
+      <div id="buttons">
+        <button id="btnBase">基准按钮</button>
+      </div>
+      <div id="contents">
+        <span id="textContent">基础文本</span>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    btnAppendChild.addEventListener('click', () => {
+      const btn = document.createElement('button')
+      btn.textContent = 'appendChild'
+      buttons.appendChild(btn)
+    })
+    btnInsertBefore.addEventListener('click', () => {
+      const btn = document.createElement('button')
+      btn.textContent = 'insertBefore'
+      buttons.insertBefore(btn, btnBase)
+    })
+    btnRepalceChild.addEventListener('click', () => {
+      const btn = document.createElement('button')
+      btn.textContent = 'appendChild'
+      buttons.replaceChild(btn, btnBase)
+    })
+    btnTextContent.addEventListener('click', () => {
+      textContent.textContent = 'textContent'
+    })
+  </script>
+</html>

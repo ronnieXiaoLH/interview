@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="div1">我们一起学Javascript</div>
+    <div>
+      <button id="btnSplit">拆分</button>
+      <button id="btnNormalize">合并</button>
+    </div>
+
+    <script>
+      /**
+       * Text 的拆分与合并
+       */
+      const div1El = document.getElementById('div1')
+      console.log(div1El.childNodes)
+      btnSplit.addEventListener('click', () => {
+        div1El.firstChild.splitText(5)
+        console.log(div1El.childNodes)
+      })
+      btnNormalize.addEventListener('click', () => {
+        div1El.normalize()
+        console.log(div1El.childNodes)
+      })
+    </script>
+  </body>
+</html>

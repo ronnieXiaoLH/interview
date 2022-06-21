@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div style="margin-left: 50px">
+      <button id="btnAfter">after</button>
+      <button id="btnBefore">before</button>
+      <button id="btnAppend">append</button>
+      <button id="btnPrepend">prepend</button>
+    </div>
+    <div style="margin: 50px">
+      <div id="buttons">
+        <button id="btnBase">基准按钮</button>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    btnAfter.addEventListener('click', () => {
+      const btn = document.createElement('button')
+      btn.textContent = 'after button'
+      btnBase.after(btn, 'after text')
+    })
+    btnBefore.addEventListener('click', () => {
+      const btn = document.createElement('button')
+      btn.textContent = 'before button'
+      btnBase.before(btn, 'before text')
+    })
+    btnAppend.addEventListener('click', () => {
+      const btn = document.createElement('button')
+      btn.textContent = 'append button'
+      buttons.append(btn, 'append text')
+    })
+    btnPrepend.addEventListener('click', () => {
+      const btn = document.createElement('button')
+      btn.textContent = 'prepend button'
+      buttons.prepend(btn, 'prepend text')
+    })
+  </script>
+
+  <div class="parent">
+    <div class="child">child</div>
+  </div>
+
+  <script>
+    function createDiv(content) {
+      const el = document.createElement('div')
+      el.innerHTML = content
+      return el
+    }
+
+    /** insertAdjacentElement:
+     *  + 只能插入一个节点
+     *  + 第一个参数可选值
+     *    - beforebegin: 开始之前
+     *    - beforeend: 结束之前
+     *    - afterbegin: 开始之后
+     *    - afterend: 结束之后
+     */
+    const parentEl = document.querySelector('.parent')
+    parentEl.insertAdjacentElement('afterbegin', createDiv('afterbegin'))
+    parentEl.insertAdjacentElement('afterend', createDiv('afterend'))
+    parentEl.insertAdjacentElement('beforebegin', createDiv('beforebegin'))
+    parentEl.insertAdjacentElement('beforeend', createDiv('beforeend'))
+  </script>
+</html>

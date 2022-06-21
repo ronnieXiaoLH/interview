@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div>
+      <button id="btnRemove">删除按钮</button>
+    </div>
+
+    <script>
+      ;(function () {
+        function onClick() {
+          console.log('被点击了')
+        }
+        var wkRefDom
+        class TestUtils {
+          constructor() {
+            this.root = document.getElementById('root')
+            this.btnRemove = document.getElementById('btnRemove')
+            this.initButton()
+          }
+
+          initButton() {
+            const btnTest = document.createElement('button')
+            btnTest.textContent = '测试的按钮'
+            btnTest.addEventListener('click', onClick)
+
+            wkRefDom = new WeakRef(btnTest)
+
+            this.btnTest = btnTest
+            this.root.appendChild(this.btnTest)
+            btnRemove.addEventListener('click', () => {
+              this.removeBtn()
+            })
+          }
+
+          removeBtn() {
+            this.btnTest.removeEventListener('click', onClick)
+            this.root.removeChild(this.btnTest)
+            // this.btnTest = null // 回收 btnTest
+            // 闭包的锅
+            // onClick = null // 回收 onClick
+          }
+        }
+        var utils = new TestUtils()
+        const wkRefEvent = new WeakRef(onClick)
+        setInterval(() => {
+          console.log(`btnTest ${wkRefDom.deref() ? '未回收' : '回收'}`)
+
+          console.log(`onClick ${wkRefEvent.deref() ? '未回收' : '回收'}`)
+        }, 1000)
+      })()
+    </script>
+  </body>
+</html>
