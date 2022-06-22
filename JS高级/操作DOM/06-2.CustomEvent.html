@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <button id="btn">开始吧</button>
+    </div>
+
+    <div>
+      <div>
+        流程1:
+        <div id="step1"></div>
+      </div>
+      <div>
+        流程2:
+        <div id="step2"></div>
+      </div>
+    </div>
+
+    <script>
+      function dispatchEE(target, type, data) {
+        var event = new CustomEvent(type, {
+          detail: data,
+        })
+        target.dispatchEvent(event)
+      }
+
+      btn.addEventListener('click', function () {
+        // 做了很多的工作
+        setTimeout(() => {
+          dispatchEE(step1, 'step-1', { param: 'step1的启动参数' })
+        }, 2000)
+      })
+
+      // 解耦
+      step1.addEventListener('step-1', function (ev) {
+        step1.textContent = '流程1进行中......,参数:' + ev.detail.param
+        setTimeout(() => {
+          dispatchEE(step2, 'step-2', { param: 'step2的启动参数' })
+        }, 2000)
+      })
+
+      // 解耦
+      step2.addEventListener('step-2', function (ev) {
+        step2.textContent = '流程2进行中......,参数:' + ev.detail.param
+        setTimeout(() => {
+          dispatchEE(window, 'finished', '我是结果')
+        }, 2000)
+      })
+
+      window.addEventListener('finished', function (ev) {
+        alert('finished successfully,结果:' + ev.detail)
+      })
+    </script>
+  </body>
+</html>

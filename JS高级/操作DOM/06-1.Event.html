@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <button id="btn">开始吧</button>
+    </div>
+
+    <div>
+      <div>
+        流程1:
+        <div id="step1"></div>
+      </div>
+      <div>
+        流程2:
+        <div id="step2"></div>
+      </div>
+    </div>
+
+    <script>
+      function dispatchEE(target, type) {
+        var event = new Event(type)
+        target.dispatchEvent(event)
+      }
+
+      btn.addEventListener('click', function () {
+        // 做了很多的工作
+        setTimeout(() => {
+          dispatchEE(step1, 'step-1')
+        }, 2000)
+      })
+
+      // 解耦
+      step1.addEventListener('step-1', function () {
+        step1.textContent = '流程1进行中......'
+        setTimeout(() => {
+          dispatchEE(step2, 'step-2')
+        }, 2000)
+      })
+
+      // 解耦
+      step2.addEventListener('step-2', function () {
+        step2.textContent = '流程2进行中......'
+        setTimeout(() => {
+          dispatchEE(window, 'finished')
+        }, 2000)
+      })
+
+      window.addEventListener('finished', function () {
+        alert('finished successfully')
+      })
+    </script>
+  </body>
+</html>
