@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="ddddd">
+      <div id="div-test" class="div">文本</div>
+    </div>
+
+    <hr />
+    <div>
+      伪类的样式:
+      <pre id="divGc"></pre>
+    </div>
+    <style>
+      .div:before {
+        content: '(你好)';
+        font-size: 1.6rem;
+      }
+    </style>
+
+    <script>
+      const divEl = document.getElementById('div-test')
+      const styleDeclaration = window.getComputedStyle(divEl, 'before')
+      const fontSize = styleDeclaration.fontSize
+      const content = styleDeclaration.content
+
+      divGc.textContent = `
+            fontSize: ${fontSize}
+            content: ${content}
+        `
+    </script>
+  </body>
+</html>

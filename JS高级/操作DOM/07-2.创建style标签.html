@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+
+  <body>
+    <div>
+      <button type="button" id="btnAdd">添加style节点</button>
+    </div>
+    <div class="div">文本</div>
+
+    <script>
+      document
+        .getElementById('btnAdd')
+        .addEventListener('click', createStyleNode)
+
+      function createStyleNode() {
+        const styleNode = document.createElement('style')
+        // 设置textContent
+        styleNode.textContent = `
+                .div {
+                    background-color: red;
+                    font-size: 30px;
+                }
+            `
+        document.head.appendChild(styleNode)
+
+        // append
+        // styleNode.append(`
+        //      .div {
+        //          background-color: red;
+        //          font-size: 30px;
+        //      }
+        // `)
+        document.head.appendChild(styleNode)
+      }
+    </script>
+  </body>
+</html>

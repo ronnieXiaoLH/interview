@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div>
+      <button id="btnAdd">动态创建节点并动画</button>
+    </div>
+    <div id="container"></div>
+    <style>
+      .ani {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: blue;
+        transition: all 3s;
+      }
+    </style>
+    <script>
+      btnAdd.addEventListener('click', createAni)
+      function createAni() {
+        var div = document.createElement('div')
+        div.className = 'ani'
+        container.appendChild(div)
+
+        div.style.left = '0px'
+        // 1. 重排，获取元素位置信息会导致重排
+        // window.getComputedStyle(div).height
+        // div.getBoundingClientRect().height
+
+        div.style.left = '200px'
+
+        // 2. 定时器
+        // setTimeout(() => {
+        //   div.style.left = '200px'
+        // }, 0)
+      }
+    </script>
+  </body>
+</html>
