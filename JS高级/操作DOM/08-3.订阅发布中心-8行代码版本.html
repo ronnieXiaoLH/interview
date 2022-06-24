@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 存在的问题：
+       *  1.必须先 emit，不然无法 off
+       */
+      class EventEmitter extends EventTarget {
+        on = (type, listener, options) =>
+          this.addEventListener(
+            type,
+            function wrap(e) {
+              listener._wrap = wrap
+              return listener.apply(this, e.detail || [])
+            },
+            options
+          )
+        off = (type, listener) => this.removeEventListener(type, listener._wrap)
+        emit = (type, ...args) =>
+          this.dispatchEvent(new CustomEvent(type, { detail: args }))
+        once = (type, listener) =>
+          this.on(type, listener, { once: true, capture: true })
+      }
+    </script>
+
+    <script>
+      const emitter = new EventEmitter()
+      function onEventX(uid, message) {
+        console.log('event-x 收到数据：', this, uid, message)
+      }
+
+      // 订阅
+      emitter.on('event-x', onEventX)
+      emitter.once('event-once', (uid, message) =>
+        console.log('event-once 收到数据：', uid, message)
+      )
+
+      // once
+      emitter.emit('event-once', -100, 'you love me')
+      emitter.emit('event-once', -100, 'you love me')
+
+      // 订阅和取消订阅
+      emitter.emit('event-x', 100, 'i love you')
+      emitter.off('event-x', onEventX)
+      emitter.emit('event-x', 100, 'i love you')
+      emitter.emit('event-x', 100, 'i love you')
+    </script>
+  </body>
+</html>

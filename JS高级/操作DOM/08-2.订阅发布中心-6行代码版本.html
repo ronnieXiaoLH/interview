@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /**
+       * 存在的问题：
+       *  1. e.detail 上获取参数
+       *  2. 不能传递多个参数
+       */
+      class EventEmitter extends EventTarget {
+        on = this.addEventListener
+        off = this.removeEventListener
+        emit = (type, data) =>
+          this.dispatchEvent(new CustomEvent(type, { detail: data }))
+        once = (type, listener) =>
+          this.on(type, listener, { once: true, capture: true })
+      }
+    </script>
+
+    <script>
+      const emitter = new EventEmitter()
+      function onEventX(e) {
+        console.log('event-x 收到数据：', e.detail)
+      }
+
+      // 订阅
+      emitter.on('event-x', onEventX)
+      emitter.once('event-once', (e) =>
+        console.log('event-once 收到数据：', e.detail)
+      )
+
+      // once
+      emitter.emit('event-once', { uid: -100, message: 'you love me' })
+      emitter.emit('event-once', { uid: -100, message: 'you love me' })
+
+      // 订阅和取消订阅
+      emitter.emit('event-x', { uid: 100, message: 'i love you' })
+      emitter.off('event-x', onEventX)
+      emitter.emit('event-x', { uid: 100, message: 'i love you' })
+    </script>
+  </body>
+</html>
