@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <link rel="stylesheet" href="./print.css" media="print">
+
+
+    <style>
+        body {
+            font-size: 28px;
+        }
+
+        .content1 {
+            color: blue;
+        }
+
+        .content2 {
+            color: red;
+        }
+
+        #btnPrint {
+            font-size: 28px;
+            position: fixed;
+            right: 100px;
+            top: 0
+        }
+    </style>
+
+    <style media="print">
+        .content1 {
+            color: green;
+            font-size: 18px
+        }
+        .content2 {
+            display: none;
+        }
+        #btnPrint {
+            display: none
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="content1">
+        <h3>关雎</h3>
+        <p>关关雎鸠，在河之洲。窈窕淑女，君子好逑。</p>
+        <p>参差荇菜，左右流之。窈窕淑女，寤寐求之。</p>
+        <p>求之不得，寤寐思服。悠哉悠哉，辗转反侧。</p>
+        <p>参差荇菜，左右采之。窈窕淑女，琴瑟友之。</p>
+        <p>参差荇菜，左右芼之。窈窕淑女，钟鼓乐之。</p>
+    </div>
+    <div class="content2">
+        <h3>硕鼠</h3>
+        <p></p>硕鼠硕鼠，无食我黍！三岁贯女，莫我肯顾。逝将去女，适彼乐土。乐土乐土，爰得我所。</p>
+        <p>硕鼠硕鼠，无食我麦！三岁贯女，莫我肯德。逝将去女，适彼乐国。乐国乐国，爰得我直。</p>
+        <p>硕鼠硕鼠，无食我苗！三岁贯女，莫我肯劳。逝将去女，适彼乐郊。乐郊乐郊，谁之永号？</p>
+    </div>
+
+    <button id="btnPrint">打印</button>
+    <script>
+        btnPrint.addEventListener("click", function () {
+            window.print();
+        })
+    </script>
+
+</body>
+
+</html>

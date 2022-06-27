@@ -1,0 +1,8 @@
+@media print {
+  .content1 {
+    color: green;
+    font-size: 18px;
+  }
+}
+
+@import url('print.css') print;
