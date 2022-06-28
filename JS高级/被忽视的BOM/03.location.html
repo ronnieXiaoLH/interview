@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        font-size: 28px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <textarea
+      id="textareaScript"
+      value="`asdasds`"
+      cols="80"
+      rows="20"
+    ></textarea>
+
+    <div>
+      <button type="button" id="btnCreateScript">创建脚本</button>
+    </div>
+
+    <script>
+      textareaScript.value = `;(function(){
+            console.log("location.href:", location.href)
+        })()`
+
+      btnCreateScript.onclick = function () {
+        const scriptContent = textareaScript.value
+        const scriptEL = document.createElement('script')
+        const scriptSrc = URL.createObjectURL(new Blob([scriptContent]))
+        scriptEL.src = scriptSrc
+        document.body.appendChild(scriptEL)
+      }
+    </script>
+  </body>
+</html>
