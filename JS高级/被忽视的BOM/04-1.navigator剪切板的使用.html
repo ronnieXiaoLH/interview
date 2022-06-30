@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btnCopy">复制</button>
+    <script>
+      function copyToClipboard(textToCopy) {
+        if (navigator.clipboard && window.isSecureContext) {
+          return navigator.clipboard.writeText(textToCopy)
+        } else {
+          console.log('其他方式复制')
+        }
+      }
+
+      btnCopy.onclick = function () {
+        copyToClipboard('需要拷贝的内容')
+          .then(() => {
+            console.log('拷贝成功')
+          })
+          .catch(() => {
+            console.log('拷贝失败')
+          })
+      }
+    </script>
+  </body>
+</html>
