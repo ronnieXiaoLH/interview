@@ -194,12 +194,14 @@ JS 是单线程的，但是浏览器的多线程的，打开一个网页，浏�
 - Object.getOwnPropertyNames() 可以遍历不可枚举的属性，但是不能遍历 Symbol 类型的属性
 - Reflect.ownKeys()
 
+**注意：for of 不能遍历对象**
+
 ## 17. js 对象和 map 有什么区别？
 
 - 普通对象的 key 只能是字符串和 Symbol，map 的 key 可以是任意类型
 - 普通对象的遍历需使用 Object.keys() Object.values() Object.entries() 转成数组在遍历，虽然 for ... in 可以遍历，但是有些其他的限制，map 可以直接使用 for of 和 forEach 来遍历
 
-## Ajax、fetch、Axios 三者有什么不同？
+## 18. Ajax、fetch、Axios 三者有什么不同？
 
 三者都用于网络请求，但是不同维度
 
@@ -217,3 +219,25 @@ Axios:
 
 - 最常用的网络请求库
 - 内部可用 XMLHttpRequest 和 Fetch 来实现
+
+## 19. for in 和 for of 有什么区别？
+
+- for in 遍历可枚举的数据，比如对象、数组、字符串等，得到的是 key
+- for of 遍历拥有 Symbol.iterator 属性的数据结构(值)，比如数组、字符串、Map、Set 等，得到的 value
+
+## 20. for await of 有什么作用？
+
+遍历 Promise 数组
+
+## 21. JS 严格模式有什么特点？
+
+- 全局变量必须先声明再访问
+- 禁止使用 with
+- 创建 eval 作用域（eval 有自己单独的作用域）
+- 禁止 this 指向 window
+- 函数参数不能重名
+
+## 22. for 和 forEach 遍历一个数组，哪个更快？
+
+- for 更快
+- forEach 每次都要创建一个函数来调用，函数需要独立的作用域，会有额外的开销

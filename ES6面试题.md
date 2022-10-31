@@ -1,4 +1,4 @@
-## 01. 你能说说ES6有哪些内容吗？
+## 01. 你能说说 ES6 有哪些内容吗？
 
 - let、const
 - 模板字符串
@@ -7,7 +7,7 @@
 - 字符串的扩展方法(includes, startsWith, endsWith, padStart, padEnd, repeat, replaceAll, trimStart, trimEnd...)
 - 数组的扩展方法(includes, isArray, from, fill, find, findIndex...)
 - 箭头函数
-- 函数的rest参数，函数参数的默认值
+- 函数的 rest 参数，函数参数的默认值
 - Symbol
 - Reflect
 - Proxy
@@ -25,12 +25,13 @@
 
 - Symbol 除了表示独一无二的值
 - 还具有元编程的能力，比如我们手写 Promise 的时候，如果不定义 Symbol.toStringTag 为 Symbol，那么通过 Object.prototype.toString.call 得到的结果就是 [object Object]
-- 还可以用于判断某对象是否为某构造器的实例 Symbol.hasInstance，很多人手写 instanceof 的时候都是通过 __proto__ 的方式，这在 ES5 是没问题的，然而在 ES6 是通过 Symbol.hasInstance
+- 还可以用于判断某对象是否为某构造器的实例 Symbol.hasInstance，很多人手写 instanceof 的时候都是通过 **proto** 的方式，这在 ES5 是没问题的，然而在 ES6 是通过 Symbol.hasInstance
 
 ### Reflect
 
 Reflect 将对象的操作集中起来，可以通过 Reflect. 的方式来使用，比如：
-- Reflect.ownKeys 可以获取对象的普通属性和Symbol类型的属性，如果不使用 Reflect.ownKeys() ，就要使用 Object.keys() 和 Object.getOwnPropertySymbols 将获取到的普通类型的属性和 Symbol 类型的属性拼接起来
+
+- Reflect.ownKeys 可以获取对象的普通属性和 Symbol 类型的属性，如果不使用 Reflect.ownKeys() ，就要使用 Object.keys() 和 Object.getOwnPropertySymbols 将获取到的普通类型的属性和 Symbol 类型的属性拼接起来
 - Reflect.has 可以判断一个对象是否存在某个属性，如果不用 Reflect.has 就要使用 key in object
 
 ## 02. 箭头函数和普通函数有什么区别呢？
@@ -39,6 +40,7 @@ Reflect 将对象的操作集中起来，可以通过 Reflect. 的方式来使�
 2. 箭头函数没有 prototype 属性
 3. 箭头函数没有 arguments 和 caller
 4. 箭头函数不能作为构造函数
+5. 箭头函数不能使用 call, apply, bind 来改变 this 的指向
 
 ## 03. Map 和 WeakMap (Set 和 WeakSet) 的区别？
 
@@ -54,16 +56,16 @@ Reflect 将对象的操作集中起来，可以通过 Reflect. 的方式来使�
 
 - AMD(Asynchronous Module Definition)
 
-  AMD，即异步模块定义。AMD定义了一套JavaScript模块依赖异步加载标准，用来解决浏览器端模块加载的问题。AMD主要是浏览器端使用，通过 define 定义模块和依赖，require 异步加载模块，推崇依赖前置
+  AMD，即异步模块定义。AMD 定义了一套 JavaScript 模块依赖异步加载标准，用来解决浏览器端模块加载的问题。AMD 主要是浏览器端使用，通过 define 定义模块和依赖，require 异步加载模块，推崇依赖前置
 
 - CMD(Common Module Definition)
 
-  CMD，即通用模块定义。CMD定义了一套JavaScript模块依赖异步加载标准，用来解决浏览器端模块架子啊的问题。CMD主要是浏览器端使用，通过 define 定义模块和依赖，require 异步加载模块，推崇依赖就近
+  CMD，即通用模块定义。CMD 定义了一套 JavaScript 模块依赖异步加载标准，用来解决浏览器端模块架子啊的问题。CMD 主要是浏览器端使用，通过 define 定义模块和依赖，require 异步加载模块，推崇依赖就近
 
 - UMD(Universal Module Definition)
 
-  UMD，即通用模块定义。UMD主要为了解决 CommonJS 和 AMD 规范下的代码不通用的问题，同时还支持将模块挂载到全局，是跨平台的解决方案
+  UMD，即通用模块定义。UMD 主要为了解决 CommonJS 和 AMD 规范下的代码不通用的问题，同时还支持将模块挂载到全局，是跨平台的解决方案
 
 - ESM(ECMAScript Module)
 
-  ESM，即ESModule。官方模块化规范，现代浏览器支持，通过 import 加载模块，export 导出内容
+  ESM，即 ESModule。官方模块化规范，现代浏览器支持，通过 import 加载模块，export 导出内容

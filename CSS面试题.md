@@ -9,20 +9,20 @@
 
 文档流是元素在 web 页面上的一种呈现方式，按照出现的先后顺序进行排列
 
-## 03. 什么是BFC
+## 03. 什么是 BFC
 
 BFC 即 Block Formatting Contexts(块级格式上下文)。它是页面中的一块区域，它决定了子元素将如何定位，以及和其他元素的关系和相互作用。
 
-具有BFC特性的元素可以看做是隔离的容器，它的子元素在布局上不会影响到外面的元素
+具有 BFC 特性的元素可以看做是隔离的容器，它的子元素在布局上不会影响到外面的元素
 
-## 04. 触发BFC的条件
+## 04. 触发 BFC 的条件
 
 - float 不为 none
 - position 的值不是 static 或 relative
 - overflow 的值不是 visible
 - display 的值是 inline-block / table-cell / flex / inline-flex / table-caption
 
-## 05. BFC的作用
+## 05. BFC 的作用
 
 - 解决 margin-top 向上传递的问题
 - 解决 margin 上下叠加的问题
@@ -34,13 +34,13 @@ BFC 即 Block Formatting Contexts(块级格式上下文)。它是页面中的一
 
 子元素清除父元素的浮动：
 
-- clear属性
+- clear 属性
 - BFC
 - 空元素
 - 给父元素设置 .clearfix::after{}
 
 ```css
-.clearfix::after{
+.clearfix::after {
   content: '';
   display: block;
   clear: both;
@@ -145,5 +145,11 @@ BFC 即 Block Formatting Contexts(块级格式上下文)。它是页面中的一
 ## 09. rem 和 em 的区别
 
 - rem 是相对于根元素(html)的 font-size 的，1rem = 根元素的 font-size
-- em 如果元素自身定义了 font-size，1em = 元素自身的 font-size，如果元素自身没有定义 font-size，那么 1em = 元素的父元素(设置了font-size的父元素)的 font-size
+- em 如果元素自身定义了 font-size，1em = 元素自身的 font-size，如果元素自身没有定义 font-size，那么 1em = 元素的父元素(设置了 font-size 的父元素)的 font-size
 - 如果元素自身的 font-size 设置的就是 em，那么元素自身的 font-size 就根据父元素的 font-size 计算得到
+
+## 10. vm 和 vh
+
+- 1vw 屏幕宽度的 1%
+- 1vh 屏幕高度的 1%
+- vmin 是两者的最小值，vmax 是两者中的最大值
