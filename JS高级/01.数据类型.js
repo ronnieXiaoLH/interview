@@ -26,9 +26,10 @@ console.log(+'2') // 2
  * parseInt(string, redix)：解析一个字符串并返回指定基数的十进制整数， radix 是2-36之间的整数，表示被解析字符串的基数
  *  + redix 值为0 或 空，默认是 10 进制，如果为 1 ，结果为 NaN
  *  + string 参数不是一个字符串，则将其转换为字符串，如果以数字0开头认为是 8 进制，以0x开头认为是 16 进制
+ *  + string 的任何一位的数字等于或大于 redix 的值，则结果为 NaN
  */
-let arr = [1, 2, 3]
-console.log(arr.map(parseInt)) // => arr.map((item, index) => parseInt(item, index)) => parseInt(1,0) parseInt(2,1) parseInt(3,2)
+/* let arr = [1, 2, 3]
+console.log(arr.map(parseInt)) // => arr.map((item, index) => parseInt(item, index)) => parseInt(1,0) parseInt(2,1) parseInt(3,2) => 1, NaN, NaN */
 
 /**
  * typeof null 为什么等于 object ?
@@ -54,11 +55,11 @@ console.log(arr.map(parseInt)) // => arr.map((item, index) => parseInt(item, ind
  */
 
 /**
- * 宽松比较：
+ * 宽松比较(==)：
  *  - NaN: 和谁都不相等
  *  - BigInt, Symbol 首先会判断数据类型，数据类型不相等，一定不相等
  *  - null, undefined 只和 null 或 undefined 相等
- *  - 布尔值和其他类型的数据相等比较，布尔值会转换为数字比较
+ *  - 布尔值和其他类型的数据相等比较，布尔值会转换为数字比较(false 转换为 0，true 为 1)
  *  - 数字类型和字符串类型相等比较，会转成数字比较
  *  - 对象类型和原始类型相等比较，对象会转成原始类型
  *  - 对象类型和对象类型相等比较，比较的是引用地址
@@ -138,7 +139,7 @@ console.log(arr.indexOf(NaN)) // -1
  *  抛出异常: Uncaught TypeError: Cannot convert object to primitive value
  *
  * 误区：
- *  + === 和 !== 是否触发隐式转换 ？ 不，严等和严不等，不触发隐私转换
+ *  + === 和 !== 是否触发隐式转换 ？ 不，严等和严不等，不触发隐式转换
  *  + == 和 != 宽松比较是否触发隐式转换 ？ 分类型，一边是对象，一边是基础类型触发，两边都是对象不触发
  */
 
@@ -159,6 +160,6 @@ console.log(arr.indexOf(NaN)) // -1
  */
 
 console.log({} + {}) // => '[object Object]' + '[object Object]' '[object Object][object Object]'
-console.log({} + []) // 这里需要区分 node 和 浏览器环境，在 node 中，等价于 '[object Object]' + '' === '[object Object]'; 在浏览器中 {} 会被认为是语句，等价于 {}; + []，也就是等价于 + [] === 0
-console.log([] + []) // => '' + '' === ''
-console.log([] + {}) // => '' + '[object Object]' === '[object Object]'
+console.log({} + []) // 这里需要区分 node 和 浏览器环境，在 node 中，等价于 '[object Object]' + '' === '[object Object]'; 在浏览器中 {} 会被认为是语句，等价于 {}; + []，也就是等价于 + [] => + '' => 0
+console.log([] + []) // => '' + '' => ''
+console.log([] + {}) // => '' + '[object Object]' => '[object Object]'
