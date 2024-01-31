@@ -167,6 +167,14 @@ source-map 类型：
 - 输出资源：根据入口和模块之间的依赖关系，组装成一个个包含多个模块的 chunk，再把每个 chunk 转换成一个单独的文件加入到输出列表
 - 输出完成：在确定好输出内容后，根据配置确定输出的路径和文件名，把文件内容写入文件系统
 
+### webpack 创建的 compiler 对象是如何注册插件的？
+
+webpack 除了会注册用户在配置文件中声明要使用的插件外，还会根据配置的内容注册内置的插件
+
+### webpack 是如何根据 entry 找出模块的所有依赖的？
+
+webpack 是利用 acron 将文件的内容解析为 AST，但是 webpack 遍历 AST 只是根据 `require/import` 之类的导入语句，确定模块对其他资源的依赖关系，babel 才是根据 AST 对内容做转译。
+
 ## 10. webpack 的热更新原理
 
 - 使用 express 启动本地服务，让浏览器可以请求本地的静态资源
@@ -186,7 +194,8 @@ source-map 类型：
 
 ### webpack-dev-middleware 在热更新里主要做了什么？
 
-将打包后的文件传输给服务器
+- 修改 webpack 的 fs 为 MemoryFileSystem，并将构建后的结果存储到内存中
+- 实现请求的中间件，处理所有的资源请求，并在内存中找到对应的资源返回
 
 ## 11. tree shaking 机制的原理
 
@@ -241,7 +250,7 @@ resolve: {
 - babel-loader 开启缓存：第一次编译完成后，第二次内容没有发生改变的不会再次编译
 - 使用 cache-loader：在一些性能开销较大的 loader 之前添加 cache-loader，将结果缓存在磁盘中
 
-6. 多进程打包：把 thread-loader 放置在其他 loader 之前，放置在 thread-loader 之后的 loader 就会在一个单独的 worker 池中进行，happyPack 多进程打包
+6. 多进程打包：把 thread-loader 放置在其他 loader 之前，放置在 thread-loader 之后的 loader 就会在一个单独的 worker 池中进行，happyPack 多进程打包。（如果打包的内容比较简单，开启多进程打包，可能还好降低打包的速度，因为开启多进程本身也会消耗一定的时间）
 
 7. ParallelUglifyPlugin: 开启多进程并行压缩丑化 JS
 
@@ -253,6 +262,8 @@ resolve: {
 9. 自动刷新
 
 10. 模块热更新
+
+11. 利用 webpack5 的 cache 缓存
 
 生产环境：
 
@@ -268,6 +279,86 @@ resolve: {
 - 热更新
 - 动态链接库文件
 
+### babel-loader 如何开启缓存
+
+```javascript
+// webpack.config.js
+module.exports = {
+  // ...
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true // 或者是一个目录路径
+            }
+          }
+        ],
+        exclude: /node_modules/
+      }
+    ]
+  }
+}
+```
+
+### webpack 使用动态链接库文件的作用
+
+在使用 webpack 进行打包时，如果项目中包含大量的第三方库或模块，每次打包都需要重新编译这些模块，导致打包时间较长，并且生成的包体积很大。
+打包出动态链接库文件后，只需要在依赖的版本改变后需要再次打包出新的动态链接库文件外，其他时间 webpack 只需要将项目中需要的模块和动态链接库文件链接起来，而不需要重新编译这些模块，从而减少了打包的时间，并且减小打包后的体积
+
+### webpack 使用动态链接库文件的步骤
+
+1. 创建一个配置文件，用于打包动态库文件
+
+```javascript
+const path = require('path')
+module.exports = {
+  entry: {
+    vue: ['vue', 'vue-router', 'vuex']
+  },
+  output: {
+    filename: '[name].dll.js',
+    path: path.resolve(__dirname, './dist'),
+    library: '[name]_dll'
+  },
+  plugins: [
+    new webpack.DllPlugin({
+      name: '[name]_dll',
+      path: path.resolve(__dirname, './dist/[name]-manifest.json')
+    })
+  ]
+}
+```
+
+2. 根据配置文件运行打包命令，生成动态链接库文件和对应的 manifest 文件
+3. 在 webpack 配置文件中，引用动态链接库文件
+
+```javascript
+// webpack.config.js
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+module.exports = {
+  // ...
+  plugins: [
+    new webpack.DllReferencePlugin({
+      manifest: require('./dist/vue-minifest.json')
+    }),
+    new AddAssetHtmlPlugin({
+      filepath: path.resolve(__dirname, 'dist/vue.dll.js')
+    })
+  ]
+}
+```
+
+DllReferencePlugin 用于告诉 webpack 使用哪个 manifest 文件来动态加载链接库，对应的 js 文件会被拷贝到 dist 目录下。AddAssetHtmlPlugin 用于在 html 文件中自动加载链接库的 js 文件
+
+### webpack5 cache 缓存的原理
+
+1. 其实还是使用的 cache-loader 来将构建的结果缓存在内存中，当然也可以自定缓存的类型。
+2. 使用标识符来标识模块内容是否有更改，每个模块都会分配一个标识符。
+
 ## 15. webpack 性能优化 - 产出代码
 
 最终应达到的目的：体积更小、合理分包，不重复加载、速度更快，内存占用更小
@@ -275,11 +366,12 @@ resolve: {
 - 小图片 base64 格式(url-loader)
 - bundle 使用 contenthash(缓存)
 - 懒加载(异步加载，webpack 的魔法注释)
-- 抽离公共代码(splitChunks)
+- 抽离公共代码(splitChunks)，对 node_modules 里面的文件进行分包，特别大的第三方库使用 externals 排除
 - IgnorePlugin(忽略不需要打包的资源)
 - 使用 CDN 加速(配置 publicPath)
 - 启动 tree-shaking
-- 压缩代码
+- 使用 mini-css-extract-plugin 将 css 文件打包成单独的文件，并且丑化；使用 terser-webpack-plugin 丑化 js 代码；还可以使用 purgecss-webpack-plugin
+  移除没有用到的 css 代码
 - Scope Hosting(把所有模块合并到一起，输出到一个函数中，未开启时，一个模块就会对应一个单独的函数)
 
 ```js
@@ -288,10 +380,12 @@ module.exports = {
   optimization: {
     usedExports: true, // 只导出被外部引用的成员
     minimize: true, // 压缩代码
-    concatenateModules: true, // 尽可能将所有模块合并到一起输出到一个函数中
-  },
+    concatenateModules: true // 尽可能将所有模块合并到一起输出到一个函数中
+  }
 }
 ```
+
+**使用 webpack-bundle-analyzer 插件分析打出的包的大小**
 
 ## babel 的原理
 
